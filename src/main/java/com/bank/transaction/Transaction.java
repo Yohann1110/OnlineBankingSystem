@@ -7,7 +7,6 @@ public class Transaction {
     private double amount;
     private String date;
 
-    // Constructeur
     public Transaction(String transactionId, String fromAccount, String toAccount, double amount, String date) {
         this.transactionId = transactionId;
         this.fromAccount = fromAccount;
@@ -16,7 +15,6 @@ public class Transaction {
         this.date = date;
     }
 
-    // Getters et Setters
     public String getTransactionId() {
         return transactionId;
     }

@@ -5,7 +5,7 @@ public class TransactionFactory {
         if (type.equals("Transfer")) {
             return new TransferTransaction(transactionId, fromAccount, toAccount, amount, date);
         }
-        // Ajouter d'autres types de transactions
+        // Add other types of transactions
         return null;
     }
 }

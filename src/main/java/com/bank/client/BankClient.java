@@ -33,9 +33,25 @@ public class BankClient {
             // Automate some commands for testing
             String[] commands = {
                     "CREATE account1 PREMIUM",
+                    "CREATE account2 REWARDS",
                     "DEPOSIT account1 500",
+                    "DEPOSIT account2 300",
                     "WITHDRAW account1 200",
-                    "DISPLAY account1"
+                    "WITHDRAW account2 100",
+                    "DISPLAY account1",
+                    "DISPLAY account2",
+                    "SUSPEND account1",
+                    "DEPOSIT account1 100",  // Should not be allowed
+                    "WITHDRAW account1 50",  // Should not be allowed
+                    "DISPLAY account1",
+                    "ACTIVATE account1",
+                    "DEPOSIT account1 100",
+                    "WITHDRAW account1 50",
+                    "DISPLAY account1",
+                    "CLOSE account2",
+                    "DEPOSIT account2 100",  // Should not be allowed
+                    "WITHDRAW account2 50",  // Should not be allowed
+                    "DISPLAY account2"
             };
 
             for (String command : commands) {

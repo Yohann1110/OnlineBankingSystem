@@ -1,7 +1,6 @@
 package com.bank.account;
 
 public class PremiumAccount extends AccountDecorator {
-
     public PremiumAccount(Account decoratedAccount) {
         super(decoratedAccount);
     }

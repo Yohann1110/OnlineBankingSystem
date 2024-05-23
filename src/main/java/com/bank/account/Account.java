@@ -1,12 +1,19 @@
 package com.bank.account;
 
+import com.bank.state.AccountState;
+import com.bank.state.ActiveState;
+import com.bank.state.ClosedState;
+import com.bank.state.SuspendedState;
+
 public class Account {
     private String accountId;
     private double balance;
+    private AccountState state;
 
     public Account(String accountId, double balance) {
         this.accountId = accountId;
         this.balance = balance;
+        this.state = new ActiveState(this);
     }
 
     public String getAccountId() {
@@ -25,19 +32,39 @@ public class Account {
         this.balance = balance;
     }
 
+    public AccountState getState() {
+        return state;
+    }
+
+    public void setState(AccountState state) {
+        this.state = state;
+    }
+
     public void deposit(double amount) {
-        this.balance += amount;
+        state.deposit(amount);
     }
 
     public void withdraw(double amount) {
-        if (balance >= amount) {
-            this.balance -= amount;
-        } else {
-            System.out.println("Insufficient balance.");
-        }
+        state.withdraw(amount);
     }
 
     public void display() {
-        System.out.println("Account ID: " + accountId + ", Balance: " + balance);
+        state.display();
+    }
+
+    public void updateBalance(double amount) {
+        this.balance += amount;
+    }
+
+    public void suspend() {
+        setState(new SuspendedState(this));
+    }
+
+    public void close() {
+        setState(new ClosedState(this));
+    }
+
+    public void activate() {
+        setState(new ActiveState(this));
     }
 }
