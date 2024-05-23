@@ -1,5 +1,6 @@
 package com.bank.server;
 
+import com.bank.facade.BankFacade;
 import com.bank.transaction.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +35,7 @@ public class BankServer {
             while (true) {
                 Socket clientSocket = serverSocket.accept();
                 logger.info("Accepted connection from {}", clientSocket.getInetAddress());
-                threadPool.execute(new ClientHandler(clientSocket, transactions));
+                threadPool.execute(new ClientHandler(clientSocket, new BankFacade(transactions)));
             }
         } catch (IOException e) {
             logger.error("Error in server operation", e);

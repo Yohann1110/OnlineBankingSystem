@@ -1,5 +1,7 @@
 package com.bank.server;
 
+import com.bank.command.Command;
+import com.bank.command.CommandFactory;
 import com.bank.facade.BankFacade;
 import com.bank.transaction.Transaction;
 import org.slf4j.Logger;
@@ -14,9 +16,9 @@ public class ClientHandler implements Runnable {
     private Socket clientSocket;
     private BankFacade bankFacade;
 
-    public ClientHandler(Socket socket, List<Transaction> transactions) {
+    public ClientHandler(Socket socket, BankFacade bankFacade) {
         this.clientSocket = socket;
-        this.bankFacade = new BankFacade(transactions);
+        this.bankFacade = bankFacade;
     }
 
     @Override
@@ -26,9 +28,12 @@ public class ClientHandler implements Runnable {
              PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)) {
 
             String request;
+            CommandFactory commandFactory = new CommandFactory(bankFacade);
+
             while ((request = in.readLine()) != null) {
                 logger.debug("Received request: {}", request);
-                String response = handleRequest(request);
+                Command command = commandFactory.createCommand(request);
+                String response = command.execute();
                 out.println(response);
                 logger.debug("Sent response: {}", response);
             }
@@ -43,30 +48,5 @@ public class ClientHandler implements Runnable {
             }
         }
         logger.info("Thread {} finished handling client {}", Thread.currentThread().getName(), clientSocket.getInetAddress());
-    }
-
-    private String handleRequest(String request) {
-        String[] parts = request.split(" ");
-        String command = parts[0];
-        logger.info("Handling command: {}", command);
-
-        switch (command) {
-            case "CREATE":
-                return bankFacade.createAccount(parts[1], parts[2]);
-            case "DEPOSIT":
-                return bankFacade.depositToAccount(parts[1], Double.parseDouble(parts[2]));
-            case "WITHDRAW":
-                return bankFacade.withdrawFromAccount(parts[1], Double.parseDouble(parts[2]));
-            case "DISPLAY":
-                return bankFacade.displayAccount(parts[1]);
-            case "SUSPEND":
-                return bankFacade.suspendAccount(parts[1]);
-            case "CLOSE":
-                return bankFacade.closeAccount(parts[1]);
-            case "ACTIVATE":
-                return bankFacade.activateAccount(parts[1]);
-            default:
-                return "Invalid command.";
-        }
     }
 }

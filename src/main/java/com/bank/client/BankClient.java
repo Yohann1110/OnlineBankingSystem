@@ -1,5 +1,8 @@
 package com.bank.client;
 
+import com.bank.command.Command;
+import com.bank.command.CommandFactory;
+import com.bank.facade.BankFacade;
 import com.bank.transaction.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,9 +17,13 @@ public class BankClient {
     private static final String SERVER_ADDRESS = "localhost";
     private static final int SERVER_PORT = 12345;
     private List<Transaction> transactions;
+    private BankFacade bankFacade;
+    private CommandFactory commandFactory;
 
     public BankClient() {
         transactions = new LinkedList<>();
+        bankFacade = new BankFacade(transactions);
+        commandFactory = new CommandFactory(bankFacade);
     }
 
     public static void main(String[] args) {
@@ -54,10 +61,9 @@ public class BankClient {
                     "DISPLAY account2"
             };
 
-            for (String command : commands) {
-                logger.debug("Sending command: {}", command);
-                out.println(command);
-                String response = in.readLine();
+            for (String commandString : commands) {
+                Command command = commandFactory.createCommand(commandString);
+                String response = command.execute();
                 logger.debug("Server response: {}", response);
                 System.out.println("Server response: " + response);
                 Thread.sleep(1000); // Wait for a second between commands for better readability
