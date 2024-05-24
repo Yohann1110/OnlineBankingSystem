@@ -1,23 +1,26 @@
 package com.bank.command;
 
 import com.bank.facade.BankFacade;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The ActivateAccountCommand class implements the Command interface to activate an account.
  */
 public class ActivateAccountCommand implements Command {
+    private static final Logger logger = LoggerFactory.getLogger(ActivateAccountCommand.class);
     private BankFacade bankFacade;
-    private String accountId;
+    private String phoneNumber;
 
     /**
      * Constructor to initialize the command with the necessary parameters.
      *
      * @param bankFacade The facade used to activate the account.
-     * @param accountId The ID of the account.
+     * @param phoneNumber The phone number associated with the account.
      */
-    public ActivateAccountCommand(BankFacade bankFacade, String accountId) {
+    public ActivateAccountCommand(BankFacade bankFacade, String phoneNumber) {
         this.bankFacade = bankFacade;
-        this.accountId = accountId;
+        this.phoneNumber = phoneNumber;
     }
 
     /**
@@ -27,6 +30,9 @@ public class ActivateAccountCommand implements Command {
      */
     @Override
     public String execute() {
-        return bankFacade.activateAccount(accountId);
+        logger.info("Activating account with phone number: {}", phoneNumber);
+        String result = bankFacade.activateAccount(phoneNumber);
+        logger.debug("Activate account result: {}", result);
+        return result;
     }
 }

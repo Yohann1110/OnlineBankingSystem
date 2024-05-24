@@ -9,7 +9,7 @@ public abstract class AccountDecorator extends Account {
     protected Account decoratedAccount;
 
     public AccountDecorator(Account decoratedAccount) {
-        super(decoratedAccount.getAccountId(), decoratedAccount.getBalance());
+        super(decoratedAccount.getPhoneNumber(), decoratedAccount.getBalance());
         this.decoratedAccount = decoratedAccount;
     }
 

@@ -25,6 +25,6 @@ public class SuspendedState implements AccountState {
 
     @Override
     public void display() {
-        System.out.println("Account ID: " + account.getAccountId() + ", Balance: " + account.getBalance() + " (suspended)");
+        System.out.println("Phone Number: " + account.getPhoneNumber() + ", Balance: " + account.getBalance() + " (suspended)");
     }
 }

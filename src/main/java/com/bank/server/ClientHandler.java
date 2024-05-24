@@ -35,6 +35,7 @@ public class ClientHandler implements Runnable {
             while ((request = in.readLine()) != null) {
                 logger.debug("Received request: {}", request);
                 Command command = commandFactory.createCommand(request);
+                logger.info("Executing command: {}", command.getClass().getSimpleName());
                 String response = command.execute();
                 out.println(response);
                 logger.debug("Sent response: {}", response);

@@ -43,6 +43,8 @@ public class CommandFactory {
                 return new ActivateAccountCommand(bankFacade, parts[1]);
             case "CLOSE":
                 return new CloseAccountCommand(bankFacade, parts[1]);
+            case "TRANSFER":
+                return new TransferCommand(bankFacade, parts[1], parts[2], Double.parseDouble(parts[3]));
             default:
                 throw new IllegalArgumentException("Invalid command: " + commandType);
         }

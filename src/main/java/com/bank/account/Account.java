@@ -10,28 +10,28 @@ import com.bank.state.SuspendedState;
  * and delegates state-specific behavior to the current state object.
  */
 public class Account {
-    private String accountId;
+    private String phoneNumber;
     private double balance;
     private AccountState state;
 
     /**
-     * Constructor to initialize an account with the given ID and balance.
+     * Constructor to initialize an account with the given phone number and balance.
      *
-     * @param accountId The ID of the account.
+     * @param phoneNumber The phone number associated with the account.
      * @param balance The initial balance of the account.
      */
-    public Account(String accountId, double balance) {
-        this.accountId = accountId;
+    public Account(String phoneNumber, double balance) {
+        this.phoneNumber = phoneNumber;
         this.balance = balance;
         this.state = new ActiveState(this); // Default state is active
     }
 
-    public String getAccountId() {
-        return accountId;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setAccountId(String accountId) {
-        this.accountId = accountId;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public double getBalance() {

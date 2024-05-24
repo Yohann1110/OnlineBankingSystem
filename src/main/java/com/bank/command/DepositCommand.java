@@ -1,25 +1,28 @@
 package com.bank.command;
 
 import com.bank.facade.BankFacade;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The DepositCommand class implements the Command interface to deposit an amount into an account.
  */
 public class DepositCommand implements Command {
+    private static final Logger logger = LoggerFactory.getLogger(DepositCommand.class);
     private BankFacade bankFacade;
-    private String accountId;
+    private String phoneNumber;
     private double amount;
 
     /**
      * Constructor to initialize the command with the necessary parameters.
      *
      * @param bankFacade The facade used to perform the deposit.
-     * @param accountId The ID of the account.
+     * @param phoneNumber The phone number associated with the account.
      * @param amount The amount to deposit.
      */
-    public DepositCommand(BankFacade bankFacade, String accountId, double amount) {
+    public DepositCommand(BankFacade bankFacade, String phoneNumber, double amount) {
         this.bankFacade = bankFacade;
-        this.accountId = accountId;
+        this.phoneNumber = phoneNumber;
         this.amount = amount;
     }
 
@@ -30,6 +33,9 @@ public class DepositCommand implements Command {
      */
     @Override
     public String execute() {
-        return bankFacade.depositToAccount(accountId, amount);
+        logger.info("Depositing amount: {} to account with phone number: {}", amount, phoneNumber);
+        String result = bankFacade.depositToAccount(phoneNumber, amount);
+        logger.debug("Deposit result: {}", result);
+        return result;
     }
 }
