@@ -2,6 +2,10 @@ package com.bank.state;
 
 import com.bank.account.Account;
 
+/**
+ * The SuspendedState class represents the suspended state of an account.
+ * It defines behavior specific to a suspended account.
+ */
 public class SuspendedState implements AccountState {
     private Account account;
 

@@ -13,6 +13,10 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * The BankServer class initializes and starts the bank server, accepting client connections
+ * and handling them using a thread pool.
+ */
 public class BankServer {
     private static final Logger logger = LoggerFactory.getLogger(BankServer.class);
     private static final int PORT = 12345;
@@ -20,21 +24,28 @@ public class BankServer {
     private ExecutorService threadPool;
 
     public BankServer() {
+        // Initialize the transactions list and the thread pool
         transactions = new LinkedList<>();
-        threadPool = Executors.newFixedThreadPool(10); // Un seul pool de threads avec 10 threads
+        threadPool = Executors.newFixedThreadPool(10); // Single thread pool with 10 threads
     }
 
     public static void main(String[] args) {
+        // Start the server
         new BankServer().startServer();
     }
 
+    /**
+     * Starts the bank server, accepts client connections, and delegates handling to the thread pool.
+     */
     public void startServer() {
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             logger.info("Bank server is running on port {}...", PORT);
 
             while (true) {
+                // Accept client connections
                 Socket clientSocket = serverSocket.accept();
                 logger.info("Accepted connection from {}", clientSocket.getInetAddress());
+                // Delegate handling to the thread pool
                 threadPool.execute(new ClientHandler(clientSocket, new BankFacade(transactions)));
             }
         } catch (IOException e) {

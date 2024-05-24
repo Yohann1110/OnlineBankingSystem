@@ -2,6 +2,10 @@ package com.bank.state;
 
 import com.bank.account.Account;
 
+/**
+ * The ClosedState class represents the closed state of an account.
+ * It defines behavior specific to a closed account.
+ */
 public class ClosedState implements AccountState {
     private Account account;
 

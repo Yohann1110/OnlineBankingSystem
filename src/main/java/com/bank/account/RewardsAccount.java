@@ -1,5 +1,9 @@
 package com.bank.account;
 
+/**
+ * The RewardsAccount class is a concrete decorator that extends AccountDecorator.
+ * It adds new functionalities (e.g., reward points) to the Account objects dynamically.
+ */
 public class RewardsAccount extends AccountDecorator {
     private int rewardPoints;
 

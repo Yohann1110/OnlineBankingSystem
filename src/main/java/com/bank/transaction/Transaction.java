@@ -1,5 +1,9 @@
 package com.bank.transaction;
 
+/**
+ * The Transaction class represents a financial transaction.
+ * It stores details such as transaction ID, accounts involved, amount, and date.
+ */
 public class Transaction {
     private String transactionId;
     private String fromAccount;

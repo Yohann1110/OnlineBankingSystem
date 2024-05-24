@@ -2,6 +2,10 @@ package com.bank.state;
 
 import com.bank.account.Account;
 
+/**
+ * The ActiveState class represents the active state of an account.
+ * It defines behavior specific to an active account.
+ */
 public class ActiveState implements AccountState {
     private Account account;
 

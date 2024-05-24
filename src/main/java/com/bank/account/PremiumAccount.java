@@ -1,5 +1,9 @@
 package com.bank.account;
 
+/**
+ * The PremiumAccount class is a concrete decorator that extends AccountDecorator.
+ * It adds new functionalities (e.g., premium services) to the Account objects dynamically.
+ */
 public class PremiumAccount extends AccountDecorator {
     public PremiumAccount(Account decoratedAccount) {
         super(decoratedAccount);

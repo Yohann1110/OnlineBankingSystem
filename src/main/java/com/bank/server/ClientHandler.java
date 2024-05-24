@@ -3,14 +3,15 @@ package com.bank.server;
 import com.bank.command.Command;
 import com.bank.command.CommandFactory;
 import com.bank.facade.BankFacade;
-import com.bank.transaction.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.List;
 
+/**
+ * The ClientHandler class handles client connections, processing incoming requests and sending responses.
+ */
 public class ClientHandler implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(ClientHandler.class);
     private Socket clientSocket;
@@ -30,6 +31,7 @@ public class ClientHandler implements Runnable {
             String request;
             CommandFactory commandFactory = new CommandFactory(bankFacade);
 
+            // Read and process requests from the client
             while ((request = in.readLine()) != null) {
                 logger.debug("Received request: {}", request);
                 Command command = commandFactory.createCommand(request);

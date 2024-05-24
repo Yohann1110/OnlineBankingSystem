@@ -2,14 +2,29 @@ package com.bank.command;
 
 import com.bank.facade.BankFacade;
 
+/**
+ * The CommandFactory class is responsible for creating command objects based on input strings.
+ * It simplifies the client code by encapsulating the logic of which command to instantiate.
+ */
 public class CommandFactory {
-    private static BankFacade bankFacade;
+    private BankFacade bankFacade;
 
+    /**
+     * Constructor to initialize the CommandFactory with a reference to the BankFacade.
+     *
+     * @param bankFacade The facade used to execute commands.
+     */
     public CommandFactory(BankFacade bankFacade) {
-        CommandFactory.bankFacade = bankFacade;
+        this.bankFacade = bankFacade;
     }
 
-    public static Command createCommand(String input) {
+    /**
+     * Creates a command object based on the input string.
+     *
+     * @param input The input string representing the command.
+     * @return The created command object.
+     */
+    public Command createCommand(String input) {
         String[] parts = input.split(" ");
         String commandType = parts[0];
 

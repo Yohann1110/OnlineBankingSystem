@@ -1,5 +1,10 @@
 package com.bank.account;
 
+/**
+ * The AccountDecorator class is an abstract class that extends Account and contains a reference
+ * to another Account object. It delegates calls to the wrapped account object, allowing additional
+ * behavior to be added.
+ */
 public abstract class AccountDecorator extends Account {
     protected Account decoratedAccount;
 

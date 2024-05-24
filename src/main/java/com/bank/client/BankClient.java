@@ -12,6 +12,9 @@ import java.net.Socket;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * The BankClient class connects to the bank server and sends commands to perform various banking operations.
+ */
 public class BankClient {
     private static final Logger logger = LoggerFactory.getLogger(BankClient.class);
     private static final String SERVER_ADDRESS = "localhost";
@@ -20,16 +23,24 @@ public class BankClient {
     private BankFacade bankFacade;
     private CommandFactory commandFactory;
 
+    /**
+     * Constructor to initialize the BankClient.
+     */
     public BankClient() {
+        // Initialize the transactions list and the facade for bank operations
         transactions = new LinkedList<>();
         bankFacade = new BankFacade(transactions);
         commandFactory = new CommandFactory(bankFacade);
     }
 
     public static void main(String[] args) {
+        // Start the client application
         new BankClient().startClient();
     }
 
+    /**
+     * Establishes a connection to the server, sends commands, and processes responses.
+     */
     public void startClient() {
         try (Socket socket = new Socket(SERVER_ADDRESS, SERVER_PORT);
              BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -37,7 +48,7 @@ public class BankClient {
 
             logger.info("Connected to server at {}:{}", SERVER_ADDRESS, SERVER_PORT);
 
-            // Automate some commands for testing
+            // Array of commands to be executed for testing the system
             String[] commands = {
                     "CREATE account1 PREMIUM",
                     "CREATE account2 REWARDS",
@@ -61,6 +72,7 @@ public class BankClient {
                     "DISPLAY account2"
             };
 
+            // Loop through each command, send it to the server, and process the response
             for (String commandString : commands) {
                 Command command = commandFactory.createCommand(commandString);
                 String response = command.execute();
