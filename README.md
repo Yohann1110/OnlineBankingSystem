@@ -1,5 +1,41 @@
 # Online Banking System
 
+## Example Commands
+
+You can interact with the banking system using the following commands:
+
+1. **CREATE [phoneNumber] [accountType]**
+    - Create a new account with the specified phone number and account type.
+    - Example: `CREATE 1234567890 PREMIUM`
+
+2. **DEPOSIT [phoneNumber] [amount]**
+    - Deposit the specified amount into the account associated with the given phone number.
+    - Example: `DEPOSIT 1234567890 500`
+
+3. **WITHDRAW [phoneNumber] [amount]**
+    - Withdraw the specified amount from the account associated with the given phone number.
+    - Example: `WITHDRAW 1234567890 200`
+
+4. **TRANSFER [fromPhoneNumber] [toPhoneNumber] [amount]**
+    - Transfer the specified amount from the account associated with the `fromPhoneNumber` to the account associated with the `toPhoneNumber`.
+    - Example: `TRANSFER 1234567890 0987654321 100`
+
+5. **DISPLAY [phoneNumber]**
+    - Display the details of the account associated with the given phone number.
+    - Example: `DISPLAY 1234567890`
+
+6. **SUSPEND [phoneNumber]**
+    - Suspend the account associated with the given phone number.
+    - Example: `SUSPEND 1234567890`
+
+7. **ACTIVATE [phoneNumber]**
+    - Activate the account associated with the given phone number.
+    - Example: `ACTIVATE 1234567890`
+
+8. **CLOSE [phoneNumber]**
+    - Close the account associated with the given phone number.
+    - Example: `CLOSE 1234567890`
+
 ## Design Patterns Used
 
 ### 1. Command Pattern
