@@ -39,7 +39,8 @@ public class BankFacade implements Serializable {
      * @param type The type of the account (e.g., PREMIUM, REWARDS).
      * @return A message indicating the result of the account creation.
      */
-    public String createAccount(String phoneNumber, String type) {
+    public synchronized String createAccount(String phoneNumber, String type) {
+        loadData();
         Account account;
         if (type.equals("PREMIUM")) {
             account = new PremiumAccount(new Account(phoneNumber, 0));
@@ -60,7 +61,8 @@ public class BankFacade implements Serializable {
      * @param amount The amount to deposit.
      * @return A message indicating the result of the deposit.
      */
-    public String depositToAccount(String phoneNumber, double amount) {
+    public synchronized String depositToAccount(String phoneNumber, double amount) {
+        loadData();
         Account account = accounts.get(phoneNumber);
         if (account == null) {
             return "Account not found: " + phoneNumber;
@@ -77,7 +79,8 @@ public class BankFacade implements Serializable {
      * @param amount The amount to withdraw.
      * @return A message indicating the result of the withdrawal.
      */
-    public String withdrawFromAccount(String phoneNumber, double amount) {
+    public synchronized String withdrawFromAccount(String phoneNumber, double amount) {
+        loadData();
         Account account = accounts.get(phoneNumber);
         if (account == null) {
             return "Account not found: " + phoneNumber;
@@ -93,7 +96,8 @@ public class BankFacade implements Serializable {
      * @param phoneNumber The phone number associated with the account.
      * @return The account details as a string.
      */
-    public String displayAccount(String phoneNumber) {
+    public synchronized String displayAccount(String phoneNumber) {
+        loadData();
         Account account = accounts.get(phoneNumber);
         if (account == null) {
             return "Account not found: " + phoneNumber;
@@ -115,7 +119,8 @@ public class BankFacade implements Serializable {
      * @param phoneNumber The phone number associated with the account.
      * @return A message indicating the result of the suspension.
      */
-    public String suspendAccount(String phoneNumber) {
+    public synchronized String suspendAccount(String phoneNumber) {
+        loadData();
         Account account = accounts.get(phoneNumber);
         if (account == null) {
             return "Account not found: " + phoneNumber;
@@ -131,7 +136,8 @@ public class BankFacade implements Serializable {
      * @param phoneNumber The phone number associated with the account.
      * @return A message indicating the result of the closure.
      */
-    public String closeAccount(String phoneNumber) {
+    public synchronized String closeAccount(String phoneNumber) {
+        loadData();
         Account account = accounts.get(phoneNumber);
         if (account == null) {
             return "Account not found: " + phoneNumber;
@@ -147,7 +153,8 @@ public class BankFacade implements Serializable {
      * @param phoneNumber The phone number associated with the account.
      * @return A message indicating the result of the activation.
      */
-    public String activateAccount(String phoneNumber) {
+    public synchronized String activateAccount(String phoneNumber) {
+        loadData();
         Account account = accounts.get(phoneNumber);
         if (account == null) {
             return "Account not found: " + phoneNumber;
@@ -165,7 +172,8 @@ public class BankFacade implements Serializable {
      * @param amount The amount to transfer.
      * @return A message indicating the result of the transfer.
      */
-    public String transfer(String fromPhoneNumber, String toPhoneNumber, double amount) {
+    public synchronized String transfer(String fromPhoneNumber, String toPhoneNumber, double amount) {
+        loadData();
         Account fromAccount = accounts.get(fromPhoneNumber);
         Account toAccount = accounts.get(toPhoneNumber);
 
@@ -189,7 +197,7 @@ public class BankFacade implements Serializable {
     /**
      * Saves the current state of accounts and transactions to a file.
      */
-    private void saveData() {
+    private synchronized void saveData() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(DATA_FILE))) {
             oos.writeObject(this);
         } catch (IOException e) {
@@ -200,7 +208,7 @@ public class BankFacade implements Serializable {
     /**
      * Loads the state of accounts and transactions from a file.
      */
-    private void loadData() {
+    private synchronized void loadData() {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(DATA_FILE))) {
             BankFacade loadedData = (BankFacade) ois.readObject();
             this.accounts = loadedData.accounts;
