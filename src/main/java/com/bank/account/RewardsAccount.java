@@ -15,13 +15,13 @@ public class RewardsAccount extends AccountDecorator {
 
     @Override
     public void deposit(double amount) {
-        super.deposit(amount);
-        addRewardPoints((int) amount);
+        super.deposit(amount); // Call the decorated account's deposit method
+        addRewardPoints((int) amount); // Add reward points based on the deposited amount
     }
 
     @Override
     public void withdraw(double amount) {
-        super.withdraw(amount);
+        super.withdraw(amount); // Call the decorated account's withdraw method
         System.out.println("Rewards account withdrawal: " + amount);
     }
 

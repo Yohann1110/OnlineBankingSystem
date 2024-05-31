@@ -18,16 +18,26 @@ public abstract class AccountDecorator extends Account implements Serializable {
 
     @Override
     public void deposit(double amount) {
-        decoratedAccount.deposit(amount);
+        decoratedAccount.deposit(amount); // This will call updateBalance within the decorated account
     }
 
     @Override
     public void withdraw(double amount) {
-        decoratedAccount.withdraw(amount);
+        decoratedAccount.withdraw(amount); // This will call updateBalance within the decorated account
     }
 
     @Override
     public void display() {
         decoratedAccount.display();
+    }
+
+    @Override
+    public double getBalance() {
+        return decoratedAccount.getBalance();
+    }
+
+    @Override
+    public void updateBalance(double amount) {
+        decoratedAccount.updateBalance(amount);
     }
 }

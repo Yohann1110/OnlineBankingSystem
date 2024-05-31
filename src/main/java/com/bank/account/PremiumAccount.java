@@ -13,13 +13,13 @@ public class PremiumAccount extends AccountDecorator {
 
     @Override
     public void deposit(double amount) {
-        super.deposit(amount);
+        super.deposit(amount); // Call the decorated account's deposit method
         System.out.println("Premium account deposit: " + amount);
     }
 
     @Override
     public void withdraw(double amount) {
-        super.withdraw(amount);
+        super.withdraw(amount); // Call the decorated account's withdraw method
         System.out.println("Premium account withdrawal: " + amount);
     }
 
