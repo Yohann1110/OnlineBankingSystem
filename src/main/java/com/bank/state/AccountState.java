@@ -1,11 +1,13 @@
 package com.bank.state;
 
+import java.io.Serializable;
+
 /**
- * The AccountState interface defines the interface for state-specific behavior.
- * It is implemented by concrete states such as ActiveState, SuspendedState, and ClosedState.
+ * The AccountState interface defines the state-specific behavior for account operations.
  */
-public interface AccountState {
+public interface AccountState extends Serializable {
     void deposit(double amount);
     void withdraw(double amount);
     void display();
+    String getDescription();
 }

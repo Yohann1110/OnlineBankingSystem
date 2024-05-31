@@ -4,9 +4,9 @@ import com.bank.account.Account;
 
 /**
  * The ActiveState class represents the active state of an account.
- * It defines behavior specific to an active account.
  */
 public class ActiveState implements AccountState {
+    private static final long serialVersionUID = 1L;
     private Account account;
 
     public ActiveState(Account account) {
@@ -23,12 +23,17 @@ public class ActiveState implements AccountState {
         if (account.getBalance() >= amount) {
             account.updateBalance(-amount);
         } else {
-            System.out.println("Insufficient balance.");
+            System.out.println("Insufficient funds");
         }
     }
 
     @Override
     public void display() {
-        System.out.println("Phone Number: " + account.getPhoneNumber() + ", Balance: " + account.getBalance());
+        System.out.println("Account is active");
+    }
+
+    @Override
+    public String getDescription() {
+        return "active";
     }
 }

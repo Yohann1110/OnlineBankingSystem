@@ -5,8 +5,7 @@ import com.bank.account.PremiumAccount;
 import com.bank.account.RewardsAccount;
 import com.bank.transaction.Transaction;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
+import java.io.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,9 +14,11 @@ import java.util.Map;
  * The BankFacade class provides a simplified interface to various banking operations.
  * It hides the complexities of the subsystem and allows the client to interact with it easily.
  */
-public class BankFacade {
+public class BankFacade implements Serializable {
+    private static final long serialVersionUID = 1L;
     private Map<String, Account> accounts;
     private List<Transaction> transactions;
+    private static final String DATA_FILE = "bank_data.ser";
 
     /**
      * Constructor to initialize the BankFacade with a list of transactions.
@@ -28,6 +29,7 @@ public class BankFacade {
         // Initialize the accounts map and transactions list
         this.accounts = new HashMap<>();
         this.transactions = transactions;
+        loadData();
     }
 
     /**
@@ -47,6 +49,7 @@ public class BankFacade {
             return "Unknown account type.";
         }
         accounts.put(phoneNumber, account);
+        saveData();
         return "Account created: " + phoneNumber + " of type " + type;
     }
 
@@ -63,6 +66,7 @@ public class BankFacade {
             return "Account not found: " + phoneNumber;
         }
         account.deposit(amount);
+        saveData();
         return "Deposited " + amount + " to account " + phoneNumber;
     }
 
@@ -79,6 +83,7 @@ public class BankFacade {
             return "Account not found: " + phoneNumber;
         }
         account.withdraw(amount);
+        saveData();
         return "Withdrew " + amount + " from account " + phoneNumber;
     }
 
@@ -100,7 +105,8 @@ public class BankFacade {
         account.display();
         System.out.flush();
         System.setOut(old);
-        return baos.toString();
+        String accountDetails = baos.toString();
+        return accountDetails + "Available Balance: " + account.getBalance();
     }
 
     /**
@@ -115,6 +121,7 @@ public class BankFacade {
             return "Account not found: " + phoneNumber;
         }
         account.suspend();
+        saveData();
         return "Account " + phoneNumber + " is now suspended.";
     }
 
@@ -130,6 +137,7 @@ public class BankFacade {
             return "Account not found: " + phoneNumber;
         }
         account.close();
+        saveData();
         return "Account " + phoneNumber + " is now closed.";
     }
 
@@ -145,6 +153,7 @@ public class BankFacade {
             return "Account not found: " + phoneNumber;
         }
         account.activate();
+        saveData();
         return "Account " + phoneNumber + " is now active.";
     }
 
@@ -172,7 +181,34 @@ public class BankFacade {
 
         fromAccount.withdraw(amount);
         toAccount.deposit(amount);
+        saveData();
 
         return "Transferred " + amount + " from " + fromPhoneNumber + " to " + toPhoneNumber;
+    }
+
+    /**
+     * Saves the current state of accounts and transactions to a file.
+     */
+    private void saveData() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(DATA_FILE))) {
+            oos.writeObject(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Loads the state of accounts and transactions from a file.
+     */
+    private void loadData() {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(DATA_FILE))) {
+            BankFacade loadedData = (BankFacade) ois.readObject();
+            this.accounts = loadedData.accounts;
+            this.transactions = loadedData.transactions;
+        } catch (FileNotFoundException e) {
+            System.out.println("Data file not found, starting with an empty state.");
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

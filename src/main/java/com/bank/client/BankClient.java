@@ -21,20 +21,15 @@ public class BankClient {
     private CommandFactory commandFactory;
 
     public BankClient() {
-        // Initialize the transactions list and the facade for bank operations
         transactions = new LinkedList<>();
         bankFacade = new BankFacade(transactions);
         commandFactory = new CommandFactory(bankFacade);
     }
 
     public static void main(String[] args) {
-        // Start the client application
         new BankClient().startClient();
     }
 
-    /**
-     * Establishes a connection to the server, sends commands, and processes responses.
-     */
     public void startClient() {
         try (Socket socket = new Socket(SERVER_ADDRESS, SERVER_PORT);
              BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -54,12 +49,11 @@ public class BankClient {
                 try {
                     Command command = commandFactory.createCommand(userInput);
                     String response = command.execute();
-                    System.out.println("Server response: " + response);
-                } catch (IllegalArgumentException e) {
-                    System.out.println("Invalid command. Please try again.");
+                    System.out.println(response);
+                } catch (Exception e) {
+                    System.out.println("Invalid command or error: " + e.getMessage());
                 }
             }
-
         } catch (IOException e) {
             logger.error("Error in client operation", e);
         }

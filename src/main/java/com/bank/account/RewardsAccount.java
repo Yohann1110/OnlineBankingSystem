@@ -5,6 +5,7 @@ package com.bank.account;
  * It adds new functionalities (e.g., reward points) to the Account objects dynamically.
  */
 public class RewardsAccount extends AccountDecorator {
+    private static final long serialVersionUID = 1L;
     private int rewardPoints;
 
     public RewardsAccount(Account decoratedAccount) {

@@ -1,10 +1,13 @@
 package com.bank.transaction;
 
+import java.io.Serializable;
+
 /**
  * The Transaction class represents a financial transaction.
  * It stores details such as transaction ID, accounts involved, amount, and date.
  */
-public class Transaction {
+public class Transaction implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String transactionId;
     private String fromAccount;
     private String toAccount;

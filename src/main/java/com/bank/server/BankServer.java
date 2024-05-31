@@ -41,12 +41,13 @@ public class BankServer {
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             logger.info("Bank server is running on port {}...", PORT);
 
+            BankFacade bankFacade = new BankFacade(transactions);
             while (true) {
                 // Accept client connections
                 Socket clientSocket = serverSocket.accept();
                 logger.info("Accepted connection from {}", clientSocket.getInetAddress());
                 // Delegate handling to the thread pool
-                threadPool.execute(new ClientHandler(clientSocket, new BankFacade(transactions)));
+                threadPool.execute(new ClientHandler(clientSocket, bankFacade));
             }
         } catch (IOException e) {
             logger.error("Error in server operation", e);

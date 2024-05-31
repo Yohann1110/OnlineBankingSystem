@@ -32,7 +32,6 @@ public class DisplayAccountCommand implements Command {
     public String execute() {
         logger.info("Displaying account with phone number: {}", phoneNumber);
         String result = bankFacade.displayAccount(phoneNumber);
-        logger.debug("Display account result: {}", result);
         return result;
     }
 }

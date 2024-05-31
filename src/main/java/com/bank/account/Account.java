@@ -5,11 +5,14 @@ import com.bank.state.ActiveState;
 import com.bank.state.ClosedState;
 import com.bank.state.SuspendedState;
 
+import java.io.Serializable;
+
 /**
  * The Account class represents a bank account. It maintains the account's state and balance,
  * and delegates state-specific behavior to the current state object.
  */
-public class Account {
+public class Account implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String phoneNumber;
     private double balance;
     private AccountState state;

@@ -5,6 +5,8 @@ package com.bank.account;
  * It adds new functionalities (e.g., premium services) to the Account objects dynamically.
  */
 public class PremiumAccount extends AccountDecorator {
+    private static final long serialVersionUID = 1L;
+
     public PremiumAccount(Account decoratedAccount) {
         super(decoratedAccount);
     }
