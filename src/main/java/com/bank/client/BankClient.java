@@ -54,7 +54,7 @@ public class BankClient {
                 try {
                     Command command = commandFactory.createCommand(userInput);
                     String response = command.execute();
-                    System.out.println("Server response: " + response);
+                    System.out.println(response);
                 } catch (IllegalArgumentException e) {
                     System.out.println("Invalid command or error: " + e.getMessage());
                 }

@@ -10,40 +10,50 @@ import java.io.*;
 import java.net.Socket;
 
 /**
- * The ClientHandler class handles communication with a single client.
- * It reads commands from the client, processes them using the BankFacade, and sends responses back to the client.
+ * The ClientHandler class handles client connections, processing incoming requests and sending responses.
  */
 public class ClientHandler implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(ClientHandler.class);
     private Socket clientSocket;
     private BankFacade bankFacade;
 
-    public ClientHandler(Socket clientSocket, BankFacade bankFacade) {
-        this.clientSocket = clientSocket;
+    public ClientHandler(Socket socket, BankFacade bankFacade) {
+        this.clientSocket = socket;
         this.bankFacade = bankFacade;
     }
 
     @Override
     public void run() {
-        try (ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream());
-             ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream())) {
+        logger.info("Thread {} started handling client {}", Thread.currentThread().getName(), clientSocket.getInetAddress());
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+             PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)) {
 
+            String request;
             CommandFactory commandFactory = new CommandFactory(bankFacade);
-            Command command;
-            while ((command = (Command) ois.readObject()) != null) {
-                // Process the command and send the response
-                String response = command.execute();
-                oos.writeObject(response);
-                oos.flush();
+
+            // Read and process requests from the client
+            while ((request = in.readLine()) != null) {
+                logger.debug("Received request: {}", request);
+                try {
+                    Command command = commandFactory.createCommand(request);
+                    String response = command.execute();
+                    out.println(response);
+                    logger.info("Processed command: {} with response: {}", request, response);
+                } catch (IllegalArgumentException e) {
+                    logger.error("Invalid command: {}", request, e);
+                    out.println("Invalid command or error: " + e.getMessage());
+                }
             }
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException e) {
             logger.error("Error handling client connection", e);
         } finally {
             try {
                 clientSocket.close();
+                logger.info("Client socket closed for client {}", clientSocket.getInetAddress());
             } catch (IOException e) {
                 logger.error("Error closing client socket", e);
             }
         }
+        logger.info("Thread {} finished handling client {}", Thread.currentThread().getName(), clientSocket.getInetAddress());
     }
 }
