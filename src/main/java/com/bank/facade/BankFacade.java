@@ -41,6 +41,10 @@ public class BankFacade implements Serializable {
      */
     public synchronized String createAccount(String phoneNumber, String type) {
         loadData();
+        if (accounts.containsKey(phoneNumber)) {
+            return "An account with phone number " + phoneNumber + " already exists.";
+        }
+
         Account account;
         if (type.equals("PREMIUM")) {
             account = new PremiumAccount(new Account(phoneNumber, 0));
