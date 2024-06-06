@@ -109,59 +109,7 @@ public class BankFacade implements Serializable {
         account.display();
         System.out.flush();
         System.setOut(old);
-        String accountDetails = baos.toString();
-        return accountDetails + "Available Balance: " + account.getBalance();
-    }
-
-    /**
-     * Suspends the specified account.
-     *
-     * @param phoneNumber The phone number associated with the account.
-     * @return A message indicating the result of the suspension.
-     */
-    public synchronized String suspendAccount(String phoneNumber) {
-        loadData();
-        Account account = accounts.get(phoneNumber);
-        if (account == null) {
-            return "Account not found: " + phoneNumber;
-        }
-        account.suspend();
-        saveData();
-        return "Account " + phoneNumber + " is now suspended.";
-    }
-
-    /**
-     * Closes the specified account.
-     *
-     * @param phoneNumber The phone number associated with the account.
-     * @return A message indicating the result of the closure.
-     */
-    public synchronized String closeAccount(String phoneNumber) {
-        loadData();
-        Account account = accounts.get(phoneNumber);
-        if (account == null) {
-            return "Account not found: " + phoneNumber;
-        }
-        account.close();
-        saveData();
-        return "Account " + phoneNumber + " is now closed.";
-    }
-
-    /**
-     * Activates the specified account.
-     *
-     * @param phoneNumber The phone number associated with the account.
-     * @return A message indicating the result of the activation.
-     */
-    public synchronized String activateAccount(String phoneNumber) {
-        loadData();
-        Account account = accounts.get(phoneNumber);
-        if (account == null) {
-            return "Account not found: " + phoneNumber;
-        }
-        account.activate();
-        saveData();
-        return "Account " + phoneNumber + " is now active.";
+        return baos.toString();
     }
 
     /**

@@ -1,27 +1,26 @@
 package com.bank.account;
 
 /**
- * The RewardsAccount class is a concrete decorator that extends AccountDecorator.
- * It adds new functionalities (e.g., reward points) to the Account objects dynamically.
+ * The RewardsAccount class adds new functionalities (e.g., reward points) to the Account objects dynamically.
  */
-public class RewardsAccount extends AccountDecorator {
+public class RewardsAccount extends Account {
     private static final long serialVersionUID = 1L;
     private int rewardPoints;
 
-    public RewardsAccount(Account decoratedAccount) {
-        super(decoratedAccount);
+    public RewardsAccount(Account account) {
+        super(account.getPhoneNumber(), account.getBalance());
         this.rewardPoints = 0;
     }
 
     @Override
     public void deposit(double amount) {
-        super.deposit(amount); // Call the decorated account's deposit method
-        addRewardPoints((int) amount); // Add reward points based on the deposited amount
+        super.deposit(amount);
+        addRewardPoints((int) amount);
     }
 
     @Override
     public void withdraw(double amount) {
-        super.withdraw(amount); // Call the decorated account's withdraw method
+        super.withdraw(amount);
         System.out.println("Rewards account withdrawal: " + amount);
     }
 

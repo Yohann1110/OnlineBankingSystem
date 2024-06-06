@@ -1,21 +1,14 @@
 package com.bank.account;
 
-import com.bank.state.AccountState;
-import com.bank.state.ActiveState;
-import com.bank.state.ClosedState;
-import com.bank.state.SuspendedState;
-
 import java.io.Serializable;
 
 /**
- * The Account class represents a bank account. It maintains the account's state and balance,
- * and delegates state-specific behavior to the current state object.
+ * The Account class represents a bank account.
  */
 public class Account implements Serializable {
     private static final long serialVersionUID = 1L;
     private String phoneNumber;
     private double balance;
-    private AccountState state;
 
     /**
      * Constructor to initialize an account with the given phone number and balance.
@@ -26,85 +19,47 @@ public class Account implements Serializable {
     public Account(String phoneNumber, double balance) {
         this.phoneNumber = phoneNumber;
         this.balance = balance;
-        this.state = new ActiveState(this); // Default state is active
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
     }
 
     public double getBalance() {
         return balance;
     }
 
-    public void setBalance(double balance) {
-        this.balance = balance;
-    }
-
-    public AccountState getState() {
-        return state;
-    }
-
-    public void setState(AccountState state) {
-        this.state = state;
-    }
-
-    /**
-     * Deposits the specified amount into the account by delegating to the state object.
-     *
-     * @param amount The amount to deposit.
-     */
-    public void deposit(double amount) {
-        state.deposit(amount);
-    }
-
-    /**
-     * Withdraws the specified amount from the account by delegating to the state object.
-     *
-     * @param amount The amount to withdraw.
-     */
-    public void withdraw(double amount) {
-        state.withdraw(amount);
-    }
-
-    /**
-     * Displays the account details by delegating to the state object.
-     */
-    public void display() {
-        state.display();
-    }
-
-    /**
-     * Updates the account balance by the specified amount.
-     *
-     * @param amount The amount to update the balance by.
-     */
     public void updateBalance(double amount) {
         this.balance += amount;
     }
 
     /**
-     * Suspends the account by changing its state to suspended.
+     * Deposits the specified amount into the account.
+     *
+     * @param amount The amount to deposit.
      */
-    public void suspend() {
-        setState(new SuspendedState(this));
+    public void deposit(double amount) {
+        updateBalance(amount);
     }
 
     /**
-     * Closes the account by changing its state to closed.
+     * Withdraws the specified amount from the account.
+     *
+     * @param amount The amount to withdraw.
      */
-    public void close() {
-        setState(new ClosedState(this));
+    public void withdraw(double amount) {
+        if (balance >= amount) {
+            updateBalance(-amount);
+        } else {
+            System.out.println("Insufficient funds");
+        }
     }
 
     /**
-     * Activates the account by changing its state to active.
+     * Displays the account details.
      */
-    public void activate() {
-        setState(new ActiveState(this));
+    public void display() {
+        System.out.println("Phone Number: " + phoneNumber);
+        System.out.println("Available Balance: " + balance);
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 }

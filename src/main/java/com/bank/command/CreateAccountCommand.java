@@ -1,41 +1,24 @@
 package com.bank.command;
 
 import com.bank.facade.BankFacade;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
- * The CreateAccountCommand class implements the Command interface to create a new bank account.
+ * The CreateAccountCommand class implements the command to create a new account.
  */
 public class CreateAccountCommand implements Command {
-    private static final Logger logger = LoggerFactory.getLogger(CreateAccountCommand.class);
+    private static final long serialVersionUID = 1L;
     private BankFacade bankFacade;
     private String phoneNumber;
-    private String type;
+    private String accountType;
 
-    /**
-     * Constructor to initialize the command with the necessary parameters.
-     *
-     * @param bankFacade The facade used to create the account.
-     * @param phoneNumber The phone number associated with the account to be created.
-     * @param type The type of the account (e.g., PREMIUM, REWARDS).
-     */
-    public CreateAccountCommand(BankFacade bankFacade, String phoneNumber, String type) {
+    public CreateAccountCommand(BankFacade bankFacade, String phoneNumber, String accountType) {
         this.bankFacade = bankFacade;
         this.phoneNumber = phoneNumber;
-        this.type = type;
+        this.accountType = accountType;
     }
 
-    /**
-     * Executes the command to create a new account.
-     *
-     * @return A message indicating the result of the account creation.
-     */
     @Override
     public String execute() {
-        logger.info("Creating account with phone number: {} and type: {}", phoneNumber, type);
-        String result = bankFacade.createAccount(phoneNumber, type);
-        logger.debug("Create account result: {}", result);
-        return result;
+        return bankFacade.createAccount(phoneNumber, accountType);
     }
 }

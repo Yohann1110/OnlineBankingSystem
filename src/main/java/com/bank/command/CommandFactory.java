@@ -37,12 +37,6 @@ public class CommandFactory {
                 return new WithdrawCommand(bankFacade, parts[1], Double.parseDouble(parts[2]));
             case "DISPLAY":
                 return new DisplayAccountCommand(bankFacade, parts[1]);
-            case "SUSPEND":
-                return new SuspendAccountCommand(bankFacade, parts[1]);
-            case "ACTIVATE":
-                return new ActivateAccountCommand(bankFacade, parts[1]);
-            case "CLOSE":
-                return new CloseAccountCommand(bankFacade, parts[1]);
             case "TRANSFER":
                 return new TransferCommand(bankFacade, parts[1], parts[2], Double.parseDouble(parts[3]));
             default:

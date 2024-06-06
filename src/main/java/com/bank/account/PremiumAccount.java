@@ -1,25 +1,24 @@
 package com.bank.account;
 
 /**
- * The PremiumAccount class is a concrete decorator that extends AccountDecorator.
- * It adds new functionalities (e.g., premium services) to the Account objects dynamically.
+ * The PremiumAccount class adds new functionalities (e.g., premium services) to the Account objects dynamically.
  */
-public class PremiumAccount extends AccountDecorator {
+public class PremiumAccount extends Account {
     private static final long serialVersionUID = 1L;
 
-    public PremiumAccount(Account decoratedAccount) {
-        super(decoratedAccount);
+    public PremiumAccount(Account account) {
+        super(account.getPhoneNumber(), account.getBalance());
     }
 
     @Override
     public void deposit(double amount) {
-        super.deposit(amount); // Call the decorated account's deposit method
+        super.deposit(amount);
         System.out.println("Premium account deposit: " + amount);
     }
 
     @Override
     public void withdraw(double amount) {
-        super.withdraw(amount); // Call the decorated account's withdraw method
+        super.withdraw(amount);
         System.out.println("Premium account withdrawal: " + amount);
     }
 
