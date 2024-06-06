@@ -42,6 +42,7 @@ public class BankClient {
              BufferedReader userIn = new BufferedReader(new InputStreamReader(System.in))) {
 
             logger.info("Connected to server at {}:{}", SERVER_ADDRESS, SERVER_PORT);
+            printWelcomeMessage();
 
             String userInput;
             while (true) {
@@ -59,11 +60,30 @@ public class BankClient {
                     System.out.println(response);
                 } catch (IllegalArgumentException e) {
                     System.out.println("Invalid command or error: " + e.getMessage());
+                    printUsageInstructions();
                 }
             }
 
         } catch (IOException e) {
             logger.error("Error in client operation", e);
         }
+    }
+
+    private void printWelcomeMessage() {
+        System.out.println("=======================================");
+        System.out.println("       Welcome to the Bank System      ");
+        System.out.println("=======================================");
+        printUsageInstructions();
+    }
+
+    private void printUsageInstructions() {
+        System.out.println("\nAvailable commands:");
+        System.out.println("  CREATE [phoneNumber] [accountType]  - Create a new account");
+        System.out.println("  DEPOSIT [phoneNumber] [amount]      - Deposit an amount into an account");
+        System.out.println("  WITHDRAW [phoneNumber] [amount]     - Withdraw an amount from an account");
+        System.out.println("  TRANSFER [fromPhoneNumber] [toPhoneNumber] [amount] - Transfer an amount between accounts");
+        System.out.println("  DISPLAY [phoneNumber]               - Display account details");
+        System.out.println("  HISTORY [phoneNumber]               - Display transaction history for an account");
+        System.out.println("  EXIT                                - Exit the application\n");
     }
 }
