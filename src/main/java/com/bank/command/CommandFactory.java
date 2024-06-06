@@ -56,6 +56,11 @@ public class CommandFactory {
                         throw new IllegalArgumentException("Invalid TRANSFER command. Usage: TRANSFER [fromPhoneNumber] [toPhoneNumber] [amount]");
                     }
                     return new TransferCommand(bankFacade, parts[1], parts[2], Double.parseDouble(parts[3]));
+                case "HISTORY":
+                    if (parts.length < 2) {
+                        throw new IllegalArgumentException("Invalid HISTORY command. Usage: HISTORY [phoneNumber]");
+                    }
+                    return new TransactionHistoryCommand(bankFacade, parts[1]);
                 default:
                     throw new IllegalArgumentException("Invalid command: " + commandType);
             }

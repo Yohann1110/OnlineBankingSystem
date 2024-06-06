@@ -4,9 +4,14 @@ import com.bank.account.Account;
 import com.bank.account.PremiumAccount;
 import com.bank.account.RewardsAccount;
 import com.bank.transaction.Transaction;
+import com.bank.transaction.TransferTransaction;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +24,7 @@ public class BankFacade implements Serializable {
     private Map<String, Account> accounts;
     private List<Transaction> transactions;
     private static final String DATA_FILE = "bank_data.ser";
+    private static final Logger logger = LoggerFactory.getLogger(BankFacade.class);
 
     /**
      * Constructor to initialize the BankFacade with a list of transactions.
@@ -28,7 +34,7 @@ public class BankFacade implements Serializable {
     public BankFacade(List<Transaction> transactions) {
         // Initialize the accounts map and transactions list
         this.accounts = new HashMap<>();
-        this.transactions = transactions;
+        this.transactions = transactions != null ? transactions : new LinkedList<>();
         loadData();
     }
 
@@ -55,6 +61,7 @@ public class BankFacade implements Serializable {
         }
         accounts.put(phoneNumber, account);
         saveData();
+        logger.info("Account created: " + phoneNumber + " of type " + type);
         return "Account created: " + phoneNumber + " of type " + type;
     }
 
@@ -72,7 +79,9 @@ public class BankFacade implements Serializable {
             return "Account not found: " + phoneNumber;
         }
         account.deposit(amount);
+        transactions.add(new Transaction(generateTransactionId(), phoneNumber, amount, getCurrentDate()));
         saveData();
+        logger.info("Deposited " + amount + " to account " + phoneNumber);
         return "Deposited " + amount + " to account " + phoneNumber;
     }
 
@@ -90,7 +99,9 @@ public class BankFacade implements Serializable {
             return "Account not found: " + phoneNumber;
         }
         account.withdraw(amount);
+        transactions.add(new Transaction(generateTransactionId(), phoneNumber, amount, getCurrentDate()));
         saveData();
+        logger.info("Withdrew " + amount + " from account " + phoneNumber);
         return "Withdrew " + amount + " from account " + phoneNumber;
     }
 
@@ -113,6 +124,7 @@ public class BankFacade implements Serializable {
         account.display();
         System.out.flush();
         System.setOut(old);
+        logger.info("Displayed account for " + phoneNumber);
         return baos.toString();
     }
 
@@ -141,9 +153,28 @@ public class BankFacade implements Serializable {
 
         fromAccount.withdraw(amount);
         toAccount.deposit(amount);
+        transactions.add(new TransferTransaction(generateTransactionId(), fromPhoneNumber, toPhoneNumber, amount, getCurrentDate()));
         saveData();
-
+        logger.info("Transferred " + amount + " from " + fromPhoneNumber + " to " + toPhoneNumber);
         return "Transferred " + amount + " from " + fromPhoneNumber + " to " + toPhoneNumber;
+    }
+
+    /**
+     * Generates a transaction history for the given account.
+     *
+     * @param phoneNumber The phone number associated with the account.
+     * @return The transaction history as a string.
+     */
+    public synchronized String getTransactionHistory(String phoneNumber) {
+        loadData();
+        StringBuilder history = new StringBuilder();
+        for (Transaction transaction : transactions) {
+            if (transaction.getFromPhoneNumber().equals(phoneNumber) || transaction.getToPhoneNumber().equals(phoneNumber)) {
+                history.append(transaction.toString()).append("\n");
+            }
+        }
+        logger.info("Generated transaction history for " + phoneNumber);
+        return history.toString();
     }
 
     /**
@@ -170,5 +201,13 @@ public class BankFacade implements Serializable {
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    private String generateTransactionId() {
+        return "TXN" + System.currentTimeMillis();
+    }
+
+    private String getCurrentDate() {
+        return java.time.LocalDate.now().toString();
     }
 }

@@ -24,6 +24,10 @@ You can interact with the banking system using the following commands:
    - Display the details of the account associated with the given phone number.
    - Example: `DISPLAY 1234567890`
 
+6. **HISTORY [phoneNumber]**
+   - Retrieve the transaction history for the account associated with the given phone number.
+   - Example: `HISTORY 1234567890`
+
 ## Design Patterns Used
 
 ### 1. Command Pattern
@@ -44,7 +48,7 @@ The Command Pattern is used to encapsulate a request as an object, thereby allow
 The Facade Pattern provides a simplified interface to a complex subsystem. It makes the subsystem easier to use by hiding the complexities and providing a unified interface.
 
 **Usage in Your Project**:
-- **BankFacade**: This class acts as the facade. It provides simple methods for creating accounts, making deposits, withdrawing money, displaying account details, and transferring money between accounts. The client interacts with this simplified interface instead of dealing with the complex internal workings of account management directly.
+- **BankFacade**: This class acts as the facade. It provides simple methods for creating accounts, making deposits, withdrawing money, displaying account details, transferring money between accounts, and generating transaction histories. The client interacts with this simplified interface instead of dealing with the complex internal workings of account management directly.
 
 ### 3. Decorator Pattern
 

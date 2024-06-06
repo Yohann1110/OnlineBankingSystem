@@ -4,61 +4,73 @@ import java.io.Serializable;
 
 /**
  * The Transaction class represents a financial transaction.
- * It stores details such as transaction ID, accounts involved, amount, and date.
+ * It stores details such as transaction type, phone numbers involved, amount, and date.
  */
 public class Transaction implements Serializable {
     private static final long serialVersionUID = 1L;
     private String transactionId;
-    private String fromAccount;
-    private String toAccount;
+    private String fromPhoneNumber;
+    private String toPhoneNumber;
     private double amount;
     private String date;
 
-    public Transaction(String transactionId, String fromAccount, String toAccount, double amount, String date) {
+    /**
+     * Constructor for transactions that involve two phone numbers (e.g., transfer).
+     *
+     * @param transactionId   The unique identifier for the transaction.
+     * @param fromPhoneNumber The phone number associated with the source account.
+     * @param toPhoneNumber   The phone number associated with the target account.
+     * @param amount          The amount involved in the transaction.
+     * @param date            The date of the transaction.
+     */
+    public Transaction(String transactionId, String fromPhoneNumber, String toPhoneNumber, double amount, String date) {
         this.transactionId = transactionId;
-        this.fromAccount = fromAccount;
-        this.toAccount = toAccount;
+        this.fromPhoneNumber = fromPhoneNumber;
+        this.toPhoneNumber = toPhoneNumber;
         this.amount = amount;
         this.date = date;
+    }
+
+    /**
+     * Constructor for transactions that involve a single phone number (e.g., deposit, withdraw).
+     *
+     * @param transactionId   The unique identifier for the transaction.
+     * @param phoneNumber     The phone number associated with the account.
+     * @param amount          The amount involved in the transaction.
+     * @param date            The date of the transaction.
+     */
+    public Transaction(String transactionId, String phoneNumber, double amount, String date) {
+        this(transactionId, phoneNumber, phoneNumber, amount, date);
     }
 
     public String getTransactionId() {
         return transactionId;
     }
 
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
+    public String getFromPhoneNumber() {
+        return fromPhoneNumber;
     }
 
-    public String getFromAccount() {
-        return fromAccount;
-    }
-
-    public void setFromAccount(String fromAccount) {
-        this.fromAccount = fromAccount;
-    }
-
-    public String getToAccount() {
-        return toAccount;
-    }
-
-    public void setToAccount(String toAccount) {
-        this.toAccount = toAccount;
+    public String getToPhoneNumber() {
+        return toPhoneNumber;
     }
 
     public double getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
-
     public String getDate() {
         return date;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "transactionId='" + transactionId + '\'' +
+                ", fromPhoneNumber='" + fromPhoneNumber + '\'' +
+                ", toPhoneNumber='" + toPhoneNumber + '\'' +
+                ", amount=" + amount +
+                ", date='" + date + '\'' +
+                '}';
     }
 }
