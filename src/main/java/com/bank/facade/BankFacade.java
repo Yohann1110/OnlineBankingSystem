@@ -6,9 +6,6 @@ import com.bank.account.RewardsAccount;
 import com.bank.transaction.Transaction;
 import com.bank.transaction.TransferTransaction;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.*;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -24,7 +21,6 @@ public class BankFacade implements Serializable {
     private Map<String, Account> accounts;
     private List<Transaction> transactions;
     private static final String DATA_FILE = "bank_data.ser";
-    private static final Logger logger = LoggerFactory.getLogger(BankFacade.class);
 
     /**
      * Constructor to initialize the BankFacade with a list of transactions.
@@ -61,7 +57,6 @@ public class BankFacade implements Serializable {
         }
         accounts.put(phoneNumber, account);
         saveData();
-        logger.info("Account created: " + phoneNumber + " of type " + type);
         return "Account created: " + phoneNumber + " of type " + type;
     }
 
@@ -81,7 +76,6 @@ public class BankFacade implements Serializable {
         account.deposit(amount);
         transactions.add(new Transaction(generateTransactionId(), phoneNumber, amount, getCurrentDate()));
         saveData();
-        logger.info("Deposited " + amount + " to account " + phoneNumber);
         return "Deposited " + amount + " to account " + phoneNumber;
     }
 
@@ -101,7 +95,6 @@ public class BankFacade implements Serializable {
         account.withdraw(amount);
         transactions.add(new Transaction(generateTransactionId(), phoneNumber, amount, getCurrentDate()));
         saveData();
-        logger.info("Withdrew " + amount + " from account " + phoneNumber);
         return "Withdrew " + amount + " from account " + phoneNumber;
     }
 
@@ -124,7 +117,6 @@ public class BankFacade implements Serializable {
         account.display();
         System.out.flush();
         System.setOut(old);
-        logger.info("Displayed account for " + phoneNumber);
         return baos.toString();
     }
 
@@ -155,7 +147,6 @@ public class BankFacade implements Serializable {
         toAccount.deposit(amount);
         transactions.add(new TransferTransaction(generateTransactionId(), fromPhoneNumber, toPhoneNumber, amount, getCurrentDate()));
         saveData();
-        logger.info("Transferred " + amount + " from " + fromPhoneNumber + " to " + toPhoneNumber);
         return "Transferred " + amount + " from " + fromPhoneNumber + " to " + toPhoneNumber;
     }
 
@@ -173,7 +164,6 @@ public class BankFacade implements Serializable {
                 history.append(transaction.toString()).append("\n");
             }
         }
-        logger.info("Generated transaction history for " + phoneNumber);
         return history.toString();
     }
 

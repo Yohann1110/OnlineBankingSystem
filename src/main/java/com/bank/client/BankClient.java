@@ -52,6 +52,8 @@ public class BankClient {
                 }
 
                 try {
+                    // Send the command to the server
+                    out.println(userInput);
                     Command command = commandFactory.createCommand(userInput);
                     String response = command.execute();
                     System.out.println(response);
